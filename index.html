@@ -2,7 +2,8 @@
 <html lang="ja" ng-app="mmApp">
 <head>
 	<title>SW2.5魔法管理アプリ</title>
-	<script src="angular-1.7.2/angular.min.js"></script>
+	<script src="angular-1.7.2/angular.js"></script>
+	<script src="angular-1.7.2/angular-resource.js"></script>
 	<script type="text/javascript" src="main.js"></script>
 </head>
 <body class="container">
@@ -16,23 +17,17 @@
 						<input type="text" class="formControl" id="charaName" ng-model="charaName" placeholder="キャラ名を入力">
 					</div>
 					<div>
-						<label ng-click="isPriest()">取得技能</label>
-						<div>
-							<input type="checkbox" name="skills[]" value="sorcerer">ソーサラー
-							<input type="number" name="sorcererLevel">
+						<label">取得技能</label>
+						<div ng-repeat="skill in skills">
+							<input type="checkbox" ng-model="skill.checked">{{skill.name}}
+							<input ng-disabled="isChecked({{skill.id}})" type="number" max=15 min=1 ng-model="skill.level">
 						</div>
-						<div>
-							<input type="checkbox" name="skills[]" value="conjurer">コンジャラー
-							<input type="number" name="conjurerLevel">
+						<div ng-if="isPriest">
+							<select>
+								<option ng-repeat="god in gods"　value="god.id">{{god.name}}</option>
+							</select>
 						</div>
-						<div>
-							<input type="checkbox" name="skills[]" value="priest" ng-click="isPriest()">プリースト
-							<input type="number" name="priestLevel">
-						</div>
-						<div>
-							<input type="checkbox" name="skills[]" value="fairytamer" ng-click="isFairyTamer()">フェアリーテイマー
-							<input type="number" name="fairytamerLevel">
-						</div>
+						<div ng-if="isFairyTamer"></div>
 					</div>
 					<div>
 						
