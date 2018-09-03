@@ -5,12 +5,16 @@ app.controller('AppController', function($scope, $resource) {
 	var dataList = [];
 	$scope.isPriest = false;
 	$scope.isFairyTamer = false;
+	var magicList = [];
+	$scope.magics = [];
 
 	var getData = function() {
 		$resource('data.json').get(function(data) {
 			dataList = data;
 			$scope.skills = dataList.skills;
 			$scope.gods = dataList.gods;
+			$scope.fairyTamerElements = dataList.fairyTamerElements;
+			magicList = dataList.magics;
 		})
 	}
 
@@ -29,22 +33,16 @@ app.controller('AppController', function($scope, $resource) {
 		return $scope.isFairyTamer = false;
 	}
 
-	var init = function() {
-		getData();
-	}
-
-	init()
-
 	$scope.isChecked = function(index) {
 		// プリーストかチェック
 		if(index-1 === 2) {
 			isPriest(index-1);
 		}
 		// フェアリーテイマーかチェック
-		if(index-1 === 3) {
+		if(index-1 === 4) {
 			isFairyTamer(index-1);
 		}
-		// チェックが付いているか外れているかチェック
+		// チェックが付いているならdisabledはfalse
 		if($scope.skills[index-1].checked) {
 			return false;
 		}
@@ -55,21 +53,28 @@ app.controller('AppController', function($scope, $resource) {
 		return true;
 	}
 
-	// $scope.isPriest = function() {
-	// 	if($scope.skills[2].checked) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// };
-
-	// $scope.isFairyTamer = function() {
-	// 	if($scope.skills[3].checked) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
+	var getFairyTamerMagicList = function() {
+		// 土属性フィルター
+		var groundElementMagics = magicList.filter(function(magic) {
+			return (magic.skillId = 5, magic.elementId = 1, magic.rank <= $scope.fairyTamerElements[0].level);
+		});
+		groundElementMagics.forEach(function(magics){
+			$scope.magics.push(magics);
+		})
+	}
 
 	$scope.submit = function() {
-		console.log("submitted")
+		console.log("submit start");
+		// submitする度に初期化
+		$scope.magics = [];
+		if($scope.skills[4].checked){
+			getFairyTamerMagicList();
+		}
 	}
+
+	var init = function() {
+		getData();
+	}
+
+	init();
 })

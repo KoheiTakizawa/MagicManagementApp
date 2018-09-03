@@ -22,15 +22,19 @@
 							<input type="checkbox" ng-model="skill.checked">{{skill.name}}
 							<input ng-disabled="isChecked({{skill.id}})" type="number" max=15 min=1 ng-model="skill.level">
 						</div>
-						<div ng-if="isPriest">
+						<div ng-show="isPriest">
 							<select>
-								<option ng-repeat="god in gods"　value="god.id">{{god.name}}</option>
+								<option ng-repeat="god in gods" value="god.id">{{god.name}}</option>
 							</select>
 						</div>
-						<div ng-if="isFairyTamer"></div>
+						<div ng-show="isFairyTamer">
+							<div ng-repeat="element in fairyTamerElements">
+								<lavel>{{element.name}}</lavel>
+								<input type="number" max=15 min=0 ng-model="element.level">
+							</div>
+						</div>
 					</div>
 					<div>
-						
 					</div>
 				</div>
 				<div>
@@ -45,7 +49,7 @@
 					<th></th>
 				</tr>
 				<tr ng-repeat="magic in magics">
-					<td></td>
+					<td>{{magic.name}}</td>
 				</tr>
 			</table>
 		</div>
