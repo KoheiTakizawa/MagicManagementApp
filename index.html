@@ -1,26 +1,22 @@
 <!DOCTYPE html>
 <html lang="ja" ng-app="mmApp">
 <head>
-	<title>SW2.5魔法管理アプリ</title>
+	<title>SW2.5魔法管理</title>
 	<script src="angular-1.7.2/angular.js"></script>
 	<script src="angular-1.7.2/angular-resource.js"></script>
 	<script type="text/javascript" src="main.js"></script>
 </head>
 <body class="container">
 	<div ng-controller="AppController">
-		<h1>SW2.5魔法管理アプリ</h1>
+		<h1>SW2.5魔法管理</h1>
 		<div>
 			<form ng-submit="submit()">
-				<div class="userInfomation">
-					<div>
-						<label>キャラ名</label>
-						<input type="text" class="formControl" id="charaName" ng-model="charaName" placeholder="キャラ名を入力">
-					</div>
+				<div class="charaInfomation">
 					<div>
 						<label">取得技能</label>
 						<div ng-repeat="skill in skills">
 							<input type="checkbox" ng-model="skill.checked">{{skill.name}}
-							<input ng-disabled="isChecked({{skill.id}})" type="number" max=15 min=1 ng-model="skill.level">
+							<input ng-disabled="isChecked({{skill.id}})" type="number" max=15 min=1 ng-init="skill.level=1" ng-model="skill.level">
 						</div>
 						<div ng-show="isPriest">
 							<select>
@@ -28,9 +24,9 @@
 							</select>
 						</div>
 						<div ng-show="isFairyTamer">
-							<div ng-repeat="element in fairyTamerElements">
+							<div ng-repeat="element in fairyTamerElements | filter:ftFilter">
 								<lavel>{{element.name}}</lavel>
-								<input type="number" max=15 min=0 ng-model="element.level">
+								<input type="number" max=15 min=0 ng-init="element.level=0" ng-model="element.level">
 							</div>
 						</div>
 					</div>
@@ -38,7 +34,7 @@
 					</div>
 				</div>
 				<div>
-					<button type="submit" class="btn">出力</button>
+					<button type="submit" class="btn">表示</button>
 				</div>
 			</form>
 		</div>
