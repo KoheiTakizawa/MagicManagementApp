@@ -54,9 +54,9 @@ app.controller('AppController', function($scope, $resource) {
 	};
 
 	// ソーサラー、コンジャラー、マギテック用
-	var getStandardMagics = function(skillId, skillLevel) {
-		magicList.map(function(magic) {
-			if(magic.skillId === skillId + 1 && magic.rank <= skillLevel) {
+	var getStandardMagics = function(index, skillLevel) {
+		magicList[index].magics.map(function(magic) {
+			if(magic.rank <= skillLevel) {
 				$scope.magics.push(magic);
 			}
 		})
@@ -67,13 +67,13 @@ app.controller('AppController', function($scope, $resource) {
 	};
 
 	var addFairyTamerMagic = function(magic, index, targetRank) {
-		if (magic.skillId === 5 && magic.elementId === index + 1 && magic.rank <= targetRank) {
+		if (magic.elementId === index + 1 && magic.rank <= targetRank) {
 			$scope.magics.push(magic);
 		}
 		return;
 	};
 
-	var getFairyTamerMagicList = function(skillLevel) {
+	var getFairyTamerMagicList = function(index, skillLevel) {
 		// 総契約妖精数
 		var totalFairyNumber = skillLevel * 2;
 		// 当該属性の契約妖精数
@@ -92,7 +92,7 @@ app.controller('AppController', function($scope, $resource) {
 					targetElementNumber + Math.floor(otherElementsNumber / 2) :
 					targetElementNumber * 2;
 
-				magicList.map(function(magic) {
+				magicList[index].magics.map(function(magic) {
 					addFairyTamerMagic(magic, i, targetRank);
 				});
 				// 現在最低レベルと当該属性のレベルを比較し、下回れば更新 ⇒ Math.min()がNaN返すんだけどなんで？
@@ -100,11 +100,11 @@ app.controller('AppController', function($scope, $resource) {
 					availableSpecialLevel = targetElementNumber;
 				}
 			} else if(i === 6) {	// 基本の場合
-				magicList.map(function(magic) {
+				magicList[index].magics.map(function(magic) {
 					addFairyTamerMagic(magic, i, skillLevel);
 				})
 			} else {	// 特殊の場合
-				magicList.map(function(magic) {
+				magicList[index].magics.map(function(magic) {
 					addFairyTamerMagic(magic, i, availableSpecialLevel);
 				})
 			}
@@ -138,7 +138,7 @@ app.controller('AppController', function($scope, $resource) {
 		}
 		// 妖精魔法取得
 		if($scope.skills[4].checked){
-			getFairyTamerMagicList($scope.skills[4].level);
+			getFairyTamerMagicList(4, $scope.skills[4].level);
 		}
 	};
 
