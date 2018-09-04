@@ -65,6 +65,13 @@ app.controller('AppController', function($scope, $resource) {
 
 	var getPriestMagics = function(index, skillLevel) {
 		console.log('Priest');
+		console.log($scope.selectedGod.id);
+		magicList[index].magics.map(function(magic) {
+			if((magic.godId === 0 && magic.rank <= skillLevel) || (magic.godId === $scope.selectedGod.id && magic.rank <= skillLevel)) {
+				magic.skillName = magic.godId === 0 ? magicList[index].skillName : '特殊' + magicList[index].skillName;
+				$scope.magics.push(magic);
+			}
+		})
 	};
 
 	var addFairyTamerMagic = function(magic, index, targetRank, skillName) {
