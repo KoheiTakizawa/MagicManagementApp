@@ -69,7 +69,7 @@ app.controller('AppController', function($scope, $resource) {
 
 	var addFairyTamerMagic = function(magic, index, targetRank, skillName) {
 		if (magic.fairyElementId === index + 1 && magic.rank <= targetRank) {
-			magic.skillName = skillName + '(' + magic.fairyElement + ')';
+			magic.skillName = skillName + '(' + $scope.fairyTamerElements[index].name + ')';
 			$scope.magics.push(magic);
 		}
 		return;
