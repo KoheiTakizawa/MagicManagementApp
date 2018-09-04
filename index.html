@@ -19,9 +19,8 @@
 							<input ng-disabled="isChecked({{skill.id}})" type="number" max=15 min=1 ng-init="skill.level=1" ng-model="skill.level">
 						</div>
 						<div ng-show="isPriest">
-							<select>
-								<option ng-repeat="god in gods" value="god.id">{{god.name}}</option>
-							</select>
+							<label>信仰する神</label>
+							<select ng-model="selectedGod" ng-options="god.name for god in gods"></select>
 						</div>
 						<div ng-show="isFairyTamer">
 							<div ng-repeat="element in fairyTamerElements | filter:ftFilter">

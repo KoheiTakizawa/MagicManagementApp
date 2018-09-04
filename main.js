@@ -63,7 +63,7 @@ app.controller('AppController', function($scope, $resource) {
 		})
 	};
 
-	var getPriestMagics = function(skillLevel) {
+	var getPriestMagics = function(index, skillLevel) {
 		console.log('Priest');
 	};
 
@@ -132,7 +132,7 @@ app.controller('AppController', function($scope, $resource) {
 		}
 		// 神聖魔法取得
 		if($scope.skills[2].checked){
-			getPriestMagics($scope.skills[2].level);
+			getPriestMagics(2, $scope.skills[2].level);
 		}
 		// 魔導機術取得
 		if($scope.skills[3].checked){
