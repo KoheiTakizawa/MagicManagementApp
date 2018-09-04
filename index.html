@@ -42,9 +42,13 @@
 			<h3>使用可能魔法一覧</h3>
 			<table>
 				<tr>
-					<th></th>
+					<th>系統</th>
+					<th>ランク</th>
+					<th>名前</th>
 				</tr>
 				<tr ng-repeat="magic in magics">
+					<td>{{magic.skillName}}</td>
+					<td>{{magic.rank}}</td>
 					<td>{{magic.name}}</td>
 				</tr>
 			</table>

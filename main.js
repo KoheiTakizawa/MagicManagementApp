@@ -57,6 +57,7 @@ app.controller('AppController', function($scope, $resource) {
 	var getStandardMagics = function(index, skillLevel) {
 		magicList[index].magics.map(function(magic) {
 			if(magic.rank <= skillLevel) {
+				magic.skillName = magicList[index].skillName;
 				$scope.magics.push(magic);
 			}
 		})
@@ -66,8 +67,9 @@ app.controller('AppController', function($scope, $resource) {
 		console.log('Priest');
 	};
 
-	var addFairyTamerMagic = function(magic, index, targetRank) {
-		if (magic.elementId === index + 1 && magic.rank <= targetRank) {
+	var addFairyTamerMagic = function(magic, index, targetRank, skillName) {
+		if (magic.fairyElementId === index + 1 && magic.rank <= targetRank) {
+			magic.skillName = skillName + '(' + magic.fairyElement + ')';
 			$scope.magics.push(magic);
 		}
 		return;
@@ -93,7 +95,7 @@ app.controller('AppController', function($scope, $resource) {
 					targetElementNumber * 2;
 
 				magicList[index].magics.map(function(magic) {
-					addFairyTamerMagic(magic, i, targetRank);
+					addFairyTamerMagic(magic, i, targetRank, magicList[index].skillName);
 				});
 				// 現在最低レベルと当該属性のレベルを比較し、下回れば更新 ⇒ Math.min()がNaN返すんだけどなんで？
 				if(targetElementNumber < availableSpecialLevel) {
@@ -101,11 +103,11 @@ app.controller('AppController', function($scope, $resource) {
 				}
 			} else if(i === 6) {	// 基本の場合
 				magicList[index].magics.map(function(magic) {
-					addFairyTamerMagic(magic, i, skillLevel);
+					addFairyTamerMagic(magic, i, skillLevel, magicList[index].skillName);
 				})
 			} else {	// 特殊の場合
 				magicList[index].magics.map(function(magic) {
-					addFairyTamerMagic(magic, i, availableSpecialLevel);
+					addFairyTamerMagic(magic, i, availableSpecialLevel, magicList[index].skillName);
 				})
 			}
 		}
@@ -140,6 +142,7 @@ app.controller('AppController', function($scope, $resource) {
 		if($scope.skills[4].checked){
 			getFairyTamerMagicList(4, $scope.skills[4].level);
 		}
+		console.log('submit finished');
 	};
 
 	var init = function() {
