@@ -15,35 +15,39 @@ app.controller('AppController', function($scope, $resource) {
 			$scope.gods = dataList.gods;
 			$scope.fairyTamerElements = dataList.fairyTamerElements;
 			magicList = dataList.magics;
-		})
+		});
 	};
 
 
 	var isPriest = function(index) {
 		if($scope.skills[index].checked) {
-			return $scope.isPriest = true;
+			$scope.isPriest = true;
+			return;
 		}
-		return $scope.isPriest = false;
+		$scope.isPriest = false;
+		return;
 	};
 
 	var isFairyTamer = function(index) {
 		if($scope.skills[index].checked) {
-			return $scope.isFairyTamer = true;
+			$scope.isFairyTamer = true;
+			return;
 		}
-		return $scope.isFairyTamer = false;
+		$scope.isFairyTamer = false;
+		return;
 	};
 
-	$scope.isChecked = function(index) {
+	$scope.isChecked = function(skillId) {
 		// プリーストかチェック
-		if(index-1 === 2) {
-			isPriest(index-1);
+		if(skillId === 3) {
+			isPriest(skillId-1);
 		}
 		// フェアリーテイマーかチェック
-		if(index-1 === 4) {
-			isFairyTamer(index-1);
+		if(skillId === 5) {
+			isFairyTamer(skillId-1);
 		}
 		// チェックが付いているならdisabledはfalse
-		if($scope.skills[index-1].checked) {
+		if($scope.skills[skillId-1].checked) {
 			return false;
 		}
 		return true;
@@ -60,7 +64,7 @@ app.controller('AppController', function($scope, $resource) {
 				magic.skillName = magicList[index].skillName;
 				$scope.magics.push(magic);
 			}
-		})
+		});
 	};
 
 	var getPriestMagics = function(index, skillLevel) {
@@ -71,14 +75,16 @@ app.controller('AppController', function($scope, $resource) {
 				magic.skillName = magic.godId === 0 ? magicList[index].skillName : '特殊' + magicList[index].skillName;
 				$scope.magics.push(magic);
 			}
-		})
+		});
 	};
 
-	var addFairyTamerMagic = function(magic, index, targetRank, skillName) {
-		if (magic.fairyElementId === index + 1 && magic.rank <= targetRank) {
-			magic.skillName = skillName + '(' + $scope.fairyTamerElements[index].name + ')';
-			$scope.magics.push(magic);
-		}
+	var addFairyTamerMagic = function(index, i, upperLimitRank, skillName) {
+		magicList[index].magics.map(function(magic) {
+			if (magic.fairyElementId === i + 1 && magic.rank <= upperLimitRank) {
+				magic.skillName = skillName + '(' + $scope.fairyTamerElements[i].name + ')';
+				$scope.magics.push(magic);
+			}
+		});
 		return;
 	};
 
@@ -90,32 +96,27 @@ app.controller('AppController', function($scope, $resource) {
 		// 他属性の契約妖精数
 		var otherElementsNumber;
 		// 取得可能当該属性ランク
-		var targetRank;
+		var upperLimitRank;
 		// 各属性の最低レベル、判定用に初期値100
 		var availableSpecialLevel = 100;
 		for (var i = 0; i < $scope.fairyTamerElements.length; i++) {
 			if(i < 6) {	// 土、水・氷、炎、風、光、闇の場合
 				targetElementNumber = $scope.fairyTamerElements[i].level;
 				otherElementsNumber = targetElementNumber !== 0 ? totalFairyNumber - targetElementNumber : 0;
-				targetRank = targetElementNumber + Math.floor/*ceilどっちだっけ*/(otherElementsNumber / 2) <= targetElementNumber * 2 ?
+				upperLimitRank = targetElementNumber + Math.floor/*ceilどっちだっけ*/(otherElementsNumber / 2) <= targetElementNumber * 2 ?
 					targetElementNumber + Math.floor(otherElementsNumber / 2) :
 					targetElementNumber * 2;
-
-				magicList[index].magics.map(function(magic) {
-					addFairyTamerMagic(magic, i, targetRank, magicList[index].skillName);
-				});
+				addFairyTamerMagic(index, i, upperLimitRank, magicList[index].skillName);
 				// 現在最低レベルと当該属性のレベルを比較し、下回れば更新 ⇒ Math.min()がNaN返すんだけどなんで？
 				if(targetElementNumber < availableSpecialLevel) {
 					availableSpecialLevel = targetElementNumber;
 				}
 			} else if(i === 6) {	// 基本の場合
-				magicList[index].magics.map(function(magic) {
-					addFairyTamerMagic(magic, i, skillLevel, magicList[index].skillName);
-				})
+				upperLimitRank = skillLevel;
+				addFairyTamerMagic(index, i, upperLimitRank, magicList[index].skillName);
 			} else {	// 特殊の場合
-				magicList[index].magics.map(function(magic) {
-					addFairyTamerMagic(magic, i, availableSpecialLevel, magicList[index].skillName);
-				})
+				upperLimitRank = availableSpecialLevel;
+				addFairyTamerMagic(index, i, upperLimitRank, magicList[index].skillName);
 			}
 		}
 	};
@@ -157,4 +158,4 @@ app.controller('AppController', function($scope, $resource) {
 	};
 
 	init();
-})
+});
