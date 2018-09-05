@@ -57,9 +57,7 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="magic in magics">
-						<td>{{magic.skillName}}</td>
-						<td>{{magic.rank}}</td>
-						<td>{{magic.name}}</td>
+						<td ng-repeat="header in headerList">{{magic[header.name]}}</td>
 					</tr>
 				</tbody>
 			</table>
