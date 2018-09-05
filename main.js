@@ -162,33 +162,34 @@ app.controller('AppController', function($scope, $resource) {
 		console.log('submit finished');
 	};
 
-	$scope.outputCSV = function() {
-		console.log('ouputCSV start');
-		var csvText = '';
-		var headerArray = [];
-		for (var i = 0; i < headerList.length; i++) {
-			headerArray.push(headerList[i].displayName);
-		}
-		csvText = headerArray.join() + '\n';
+	// CSV出力は不要
+	// $scope.outputCSV = function() {
+	// 	console.log('ouputCSV start');
+	// 	var csvText = '';
+	// 	var headerArray = [];
+	// 	for (var i = 0; i < headerList.length; i++) {
+	// 		headerArray.push(headerList[i].displayName);
+	// 	}
+	// 	csvText = headerArray.join() + '\n';
 
-		$scope.magics.map(function(magic) {
-			var magicTextArray = [];
-			for(var i = 0; i < headerList.length; i++) {
-				magicTextArray.push(magic[headerList[i].name]);
-			}
-			csvText = csvText + magicTextArray.join() + '\n';
-		});
+	// 	$scope.magics.map(function(magic) {
+	// 		var magicTextArray = [];
+	// 		for(var i = 0; i < headerList.length; i++) {
+	// 			magicTextArray.push(magic[headerList[i].name]);
+	// 		}
+	// 		csvText = csvText + magicTextArray.join() + '\n';
+	// 	});
 
-		var bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
-		var blob = new Blob([ bom, csvText ], {'type':'text/plain'});
+	// 	var bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+	// 	var blob = new Blob([ bom, csvText ], {'type':'text/plain'});
 
-		if(window.navigator.msSaveBlob) {
-			window.navigator.msSaveBlob(blob, 'magics.csv');
-			window.navigator.nsSaveOrOpenBlob(blob, 'magics.csv');
-		} else {
-			document.getElementById('download').href = window.URL.createObjectURL(blob);
-		}
-	};
+	// 	if(window.navigator.msSaveBlob) {
+	// 		window.navigator.msSaveBlob(blob, 'magics.csv');
+	// 		window.navigator.nsSaveOrOpenBlob(blob, 'magics.csv');
+	// 	} else {
+	// 		document.getElementById('download').href = window.URL.createObjectURL(blob);
+	// 	}
+	// };
 
 	$scope.outputExcel = function() {
 		var wopts = {
