@@ -221,7 +221,7 @@ app.controller('AppController', function($scope, $resource) {
 			return buf;
 		}
 
-		saveAs(new Blob([s2ab(wbout)], {type: 'application/octet-stream'}), 'magics.xlsx');
+		saveAs(new Blob([s2ab(wbout)], {type: 'application/octet-stream'}), '取得魔法一覧.xlsx');
 	};
 
 	var init = function() {
