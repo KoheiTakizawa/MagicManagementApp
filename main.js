@@ -4,6 +4,9 @@ app.controller('AppController', function($scope, $resource) {
 
 	var dataList = [];
 	var magicList = [];
+	var categoryList = [];
+	var headerList = [];
+	$scope.submitFlg = false;
 	$scope.isPriest = false;
 	$scope.isFairyTamer = false;
 	$scope.magics = [];
@@ -15,6 +18,8 @@ app.controller('AppController', function($scope, $resource) {
 			$scope.gods = dataList.gods;
 			$scope.fairyTamerElements = dataList.fairyTamerElements;
 			magicList = dataList.magics;
+			categoryList = dataList.categories;
+			headerList = dataList.headers;
 		});
 	};
 
@@ -62,6 +67,7 @@ app.controller('AppController', function($scope, $resource) {
 		magicList[index].magics.map(function(magic) {
 			if(magic.rank <= skillLevel) {
 				magic.skillName = magicList[index].skillName;
+				magic.category = categoryList[magic.categoryId-1].name;
 				$scope.magics.push(magic);
 			}
 		});
@@ -73,6 +79,7 @@ app.controller('AppController', function($scope, $resource) {
 		magicList[index].magics.map(function(magic) {
 			if((magic.godId === 0 && magic.rank <= skillLevel) || (magic.godId === $scope.selectedGod.id && magic.rank <= skillLevel)) {
 				magic.skillName = magic.godId === 0 ? magicList[index].skillName : '特殊' + magicList[index].skillName;
+				magic.category = categoryList[magic.categoryId-1].name;
 				$scope.magics.push(magic);
 			}
 		});
@@ -82,6 +89,7 @@ app.controller('AppController', function($scope, $resource) {
 		magicList[index].magics.map(function(magic) {
 			if (magic.fairyElementId === i + 1 && magic.rank <= upperLimitRank) {
 				magic.skillName = skillName + '(' + $scope.fairyTamerElements[i].name + ')';
+				magic.category = categoryList[magic.categoryId-1].name;
 				$scope.magics.push(magic);
 			}
 		});
@@ -125,6 +133,7 @@ app.controller('AppController', function($scope, $resource) {
 		console.log("submit start");
 		// submitする度に初期化
 		$scope.magics = [];
+		$scope.submitFlg = true;
 		// 真語魔法取得
 		if($scope.skills[0].checked){
 			getStandardMagics(0, $scope.skills[0].level);
@@ -151,6 +160,35 @@ app.controller('AppController', function($scope, $resource) {
 			getFairyTamerMagicList(4, $scope.skills[4].level);
 		}
 		console.log('submit finished');
+	};
+
+	$scope.outputCSV = function() {
+		console.log('ouputCSV start');
+		var csvText = '';
+		var headerArray = [];
+		for (var i = 0; i < headerList.length; i++) {
+			headerArray.push(headerList[i].displayName);
+		}
+		csvText = headerArray.join() + '\n';
+
+		$scope.magics.map(function(magic) {
+			var magicTextArray = [];
+			for(var i = 0; i < headerList.length; i++) {
+				magicTextArray.push(magic[headerList[i].name]);
+			}
+			csvText = csvText + magicTextArray.join() + '\n';
+		});
+
+		var bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+		var blob = new Blob([ bom, csvText ], {'type':'text/plain'});
+
+		if(window.navigator.msSaveBlob) {
+			window.navigator.msSaveBlob(blob, 'magics.csv');
+			window.navigator.nsSaveOrOpenBlob(blob, 'magics.csv');
+		} else {
+			document.getElementById('download').href = window.URL.createObjectURL(blob);
+		}
+
 	};
 
 	var init = function() {

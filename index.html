@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="ja" ng-app="mmApp">
 <head>
-	<title>SW2.5魔法管理</title>
+	<title>SW2.5管理</title>
 	<script src="angular-1.7.2/angular.js"></script>
 	<script src="angular-1.7.2/angular-resource.js"></script>
 	<script type="text/javascript" src="main.js"></script>
 </head>
 <body class="container">
 	<div ng-controller="AppController">
-		<h1>SW2.5魔法管理</h1>
+		<h1>SW2.5管理</h1>
 		<div>
 			<form ng-submit="submit()">
 				<div class="charaInfomation">
@@ -37,8 +37,13 @@
 				</div>
 			</form>
 		</div>
-		<div>
-			<h3>使用可能魔法一覧</h3>
+		<div ng-show="submitFlg">
+			<div>
+				<h3>使用可能魔法一覧</h3>
+				<button>
+					<a id="download" href="#" download="magics.csv" ng-click="outputCSV()">CSV出力</a>
+				</button>
+			</div>
 			<table>
 				<tr>
 					<th>系統</th>
