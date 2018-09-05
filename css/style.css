@@ -1,15 +1,23 @@
 @charset "UTF-8";
 
-input[type="text"] {
-  font-size: 4.44444vw; }
+label.col-1 {
+	display:inline-block;
+	width:162px;
+}
+
+label.col-2 {
+	display:inline-block;
+	width:150px;
+}
 
 table {
 	border:1px #000000 solid;
 	border-collapse: collapse;
+	width:100%;
 }
 
 th,td {
-	font-size:14px;
+	font-size:12px;
 	text-align: center;
 }
 
@@ -20,6 +28,20 @@ th {
 td {
 	border:1px #808080 solid;
 	padding:3px 5px;
+}
+
+tbody tr:nth-child(2n) {
+	background: #FFFFCC;
+}
+
+td:nth-child(1) {
+	text-align:left;
+	width:60px;
+}
+
+td:nth-child(2) {
+	text-align:left;
+	width:40px;
 }
 
 td:nth-child(11) {

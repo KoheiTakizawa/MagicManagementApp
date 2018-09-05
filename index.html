@@ -16,9 +16,10 @@
 			<form ng-submit="submit()">
 				<div class="charaInfomation">
 					<div>
-						<label">取得技能</label>
-						<div ng-repeat="skill in skills">
-							<input type="checkbox" ng-model="skill.checked">{{skill.name}}
+						<label class="col-1">取得技能</label>
+						<label>技能レベル</label>
+						<div class="skillInput" ng-repeat="skill in skills">
+							<input type="checkbox" ng-model="skill.checked"><label class="col-2">{{skill.name}}</label>
 							<input ng-disabled="isChecked({{skill.id}})" type="number" max=15 min=1 ng-init="skill.level=1" ng-model="skill.level">
 						</div>
 						<div ng-show="isPriest">
