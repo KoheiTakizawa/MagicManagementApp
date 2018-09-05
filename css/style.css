@@ -10,6 +10,13 @@ label.col-2 {
 	width:150px;
 }
 
+label.col-3 {
+	display:inline-block;
+	width:50px;
+	padding-left:20px;
+	text-align:center;
+}
+
 table {
 	border:1px #000000 solid;
 	border-collapse: collapse;
@@ -32,16 +39,6 @@ td {
 
 tbody tr:nth-child(2n) {
 	background: #FFFFCC;
-}
-
-td:nth-child(1) {
-	text-align:left;
-	width:60px;
-}
-
-td:nth-child(2) {
-	text-align:left;
-	width:40px;
 }
 
 td:nth-child(11) {
