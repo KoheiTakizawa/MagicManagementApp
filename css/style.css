@@ -1,0 +1,32 @@
+@charset "UTF-8";
+
+input[type="text"] {
+  font-size: 4.44444vw; }
+
+table {
+	border:1px #000000 solid;
+	border-collapse: collapse;
+}
+
+th,td {
+	font-size:14px;
+	text-align: center;
+}
+
+th {
+	border:1px #000000 solid;
+}
+
+td {
+	border:1px #808080 solid;
+	padding:3px 5px;
+}
+
+td:nth-child(11) {
+	text-align:left;
+	width:150px;
+}
+td:nth-child(13) {
+	text-align:left;
+	width:300px;
+}
