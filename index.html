@@ -51,9 +51,9 @@
 			</div>
 			<table class="table-to-export" data-sheet-name="取得魔法一覧">
 				<thead>
-					<th>系統</th>
-					<th>ランク</th>
-					<th>名前</th>
+					<tr>
+						<th ng-repeat="header in headerList">{{header.displayName}}</th>
+					</tr>
 				</thead>
 				<tbody>
 					<tr ng-repeat="magic in magics">

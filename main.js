@@ -10,6 +10,7 @@ app.controller('AppController', function($scope, $resource) {
 	$scope.isPriest = false;
 	$scope.isFairyTamer = false;
 	$scope.magics = [];
+	$scope.headerList = [];
 
 	var getData = function() {
 		$resource('data.json').get(function(data) {
@@ -133,6 +134,7 @@ app.controller('AppController', function($scope, $resource) {
 		console.log("submit start");
 		// submitする度に初期化
 		$scope.magics = [];
+		$scope.headerList = headerList;
 		$scope.submitFlg = true;
 		// 真語魔法取得
 		if($scope.skills[0].checked){
