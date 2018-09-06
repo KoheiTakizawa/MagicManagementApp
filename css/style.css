@@ -21,6 +21,10 @@ input[type="number"] {
 	width:60px;
 }
 
+button.outputButton {
+	margin-left:50px;
+}
+
 table {
 	border:1px #000000 solid;
 	border-collapse: collapse;

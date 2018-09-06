@@ -43,14 +43,14 @@
 		<div ng-show="submitFlg">
 			<div>
 				<h3>取得魔法一覧</h3>
-				<button ng-click="outputExcel()">Excel出力</button>
+				<button ng-click="sortMagic(0)">ソート(系統)</button>
+				<button ng-click="sortMagic(1)">ソート(種別)</button>
+				<button class="outputButton" ng-click="outputExcel()">Excel出力</button>
 				<!-- CSV出力は不要では？
 				<button>
 					<a id="download" href="#" download="magics.csv" ng-click="outputCSV()">CSV出力</a>
 				</button>
 				-->
-				<button ng-click="sortMagic(0)">ソート(系統)</button>
-				<button ng-click="sortMagic(1)">ソート(種別)</button>
 			</div>
 			<table class="table-to-export" data-sheet-name="取得魔法一覧">
 				<thead>
