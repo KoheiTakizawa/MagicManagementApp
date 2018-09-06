@@ -63,6 +63,20 @@ app.controller('AppController', function($scope, $resource) {
 		return element.id < 7 ? true : false;
 	};
 
+	// 妖精魔法各属性の入力可能値を取得
+	$scope.changeMax = function() {
+		var totalFairy = 0;
+		var fairyCapacity = 0;
+		for(var i = 0; i < 6; i++) {
+			totalFairy = totalFairy + $scope.fairyTamerElements[i].level;
+		}
+		$scope.fairyTamerElements.forEach(function(element){
+			fairyCapacity = element.level + ($scope.skills[4].level * 2 - totalFairy);
+			// フェアリーテイマー技能レベルが最大値
+			element.max = fairyCapacity < $scope.skills[4].level ? fairyCapacity : $scope.skills[4].level;
+		});
+	};
+
 	// ソーサラー、コンジャラー、マギテック用
 	var getStandardMagics = function(index, skillLevel) {
 		magicList[index].magics.map(function(magic) {

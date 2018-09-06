@@ -29,7 +29,7 @@
 						<div ng-show="isFairyTamer">
 							<div ng-repeat="element in fairyTamerElements | filter:ftFilter">
 								<label class="col-3">{{element.name}}</label>
-								<input type="number" max=15 min=0 ng-init="element.level=0" ng-model="element.level">
+								<input type="number" max={{element.max}} min=0 ng-init="element.level=0" ng-model="element.level" ng-keyup="changeMax()" ng-mouseup="changeMax()">
 							</div>
 						</div>
 					</div>
