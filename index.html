@@ -5,6 +5,7 @@
 	<link href="css/style.css" rel="stylesheet">
 	<script src="lib/angular-1.7.2/angular.js"></script>
 	<script src="lib/angular-1.7.2/angular-resource.js"></script>
+	<script src="lib/lodash/lodash.min.js"></script>
 	<script src="lib/xlsx.full.min.js"></script>
 	<script src="lib/FileSaver.min.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
@@ -48,6 +49,8 @@
 					<a id="download" href="#" download="magics.csv" ng-click="outputCSV()">CSV出力</a>
 				</button>
 				-->
+				<button ng-click="sortMagic(0)">ソート(系統)</button>
+				<button ng-click="sortMagic(1)">ソート(種別)</button>
 			</div>
 			<table class="table-to-export" data-sheet-name="取得魔法一覧">
 				<thead>

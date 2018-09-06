@@ -6,13 +6,17 @@ app.controller('AppController', function($scope, $resource) {
 	var magicList = [];
 	var categoryList = [];
 	var headerList = [];
+	var originalMagicList = [];
 	$scope.submitFlg = false;
 	$scope.isPriest = false;
 	$scope.isFairyTamer = false;
 	$scope.magics = [];
 	$scope.headerList = [];
 
+	// jsonファイルからデータを取得
 	var getData = function() {
+		console.log('getData start');
+
 		$resource('./source/data.json').get(function(data) {
 			dataList = data;
 			$scope.skills = dataList.skills;
@@ -22,9 +26,11 @@ app.controller('AppController', function($scope, $resource) {
 			categoryList = dataList.categories;
 			headerList = dataList.headers;
 		});
+
+		console.log('getData end');
 	};
 
-
+	// 信仰する神のinput表示制御
 	var isPriest = function(index) {
 		if($scope.skills[index].checked) {
 			$scope.isPriest = true;
@@ -34,6 +40,7 @@ app.controller('AppController', function($scope, $resource) {
 		return;
 	};
 
+	// 契約属性のinput表示制御
 	var isFairyTamer = function(index) {
 		if($scope.skills[index].checked) {
 			$scope.isFairyTamer = true;
@@ -43,6 +50,7 @@ app.controller('AppController', function($scope, $resource) {
 		return;
 	};
 
+	// 技能レベルinputのdisabled制御
 	$scope.isChecked = function(skillId) {
 		// プリーストかチェック
 		if(skillId === 3) {
@@ -59,11 +67,12 @@ app.controller('AppController', function($scope, $resource) {
 		return true;
 	};
 
+	// ng-repeat契約属性から基本と特殊を外す
 	$scope.ftFilter = function(element) {
 		return element.id < 7 ? true : false;
 	};
 
-	// 妖精魔法各属性の入力可能値を取得
+	// 妖精魔法各属性の入力上限値を監視
 	$scope.changeMax = function() {
 		var totalFairy = 0;
 		var fairyCapacity = 0;
@@ -77,10 +86,11 @@ app.controller('AppController', function($scope, $resource) {
 		});
 	};
 
-	// ソーサラー、コンジャラー、マギテック用
+	// ソーサラー、コンジャラー、マギテック用魔法取得
 	var getStandardMagics = function(index, skillLevel) {
 		magicList[index].magics.map(function(magic) {
 			if(magic.rank <= skillLevel) {
+				magic.skillId = magicList[index].skillId;
 				magic.skillName = magicList[index].skillName;
 				magic.category = categoryList[magic.categoryId-1].name;
 				$scope.magics.push(magic);
@@ -88,11 +98,13 @@ app.controller('AppController', function($scope, $resource) {
 		});
 	};
 
+	// プリースト用魔法取得
 	var getPriestMagics = function(index, skillLevel) {
 		console.log('Priest');
 		console.log($scope.selectedGod.id);
 		magicList[index].magics.map(function(magic) {
 			if((magic.godId === 0 && magic.rank <= skillLevel) || (magic.godId === $scope.selectedGod.id && magic.rank <= skillLevel)) {
+				magic.skillId = magicList[index].skillId;
 				magic.skillName = magic.godId === 0 ? magicList[index].skillName : '特殊' + magicList[index].skillName;
 				magic.category = categoryList[magic.categoryId-1].name;
 				$scope.magics.push(magic);
@@ -100,9 +112,11 @@ app.controller('AppController', function($scope, $resource) {
 		});
 	};
 
+	// フェアリーテイマー魔法フィルタ
 	var addFairyTamerMagic = function(index, i, upperLimitRank, skillName) {
 		magicList[index].magics.map(function(magic) {
 			if (magic.fairyElementId === i + 1 && magic.rank <= upperLimitRank) {
+				magic.skillId = magicList[index].skillId;
 				magic.skillName = skillName + '(' + $scope.fairyTamerElements[i].name + ')';
 				magic.category = categoryList[magic.categoryId-1].name;
 				$scope.magics.push(magic);
@@ -111,6 +125,7 @@ app.controller('AppController', function($scope, $resource) {
 		return;
 	};
 
+	// フェアリーテイマー用魔法取得
 	var getFairyTamerMagicList = function(index, skillLevel) {
 		// 総契約妖精数
 		var totalFairyNumber = skillLevel * 2;
@@ -144,6 +159,7 @@ app.controller('AppController', function($scope, $resource) {
 		}
 	};
 
+	// 表示ボタン押下イベント
 	$scope.submit = function() {
 		console.log("submit start");
 		// submitする度に初期化
@@ -175,7 +191,20 @@ app.controller('AppController', function($scope, $resource) {
 		if($scope.skills[4].checked){
 			getFairyTamerMagicList(4, $scope.skills[4].level);
 		}
+
+		originalMagicList = $scope.magics;
+
 		console.log('submit finished');
+	};
+
+	$scope.sortMagic = function(index) {
+		// 系統ソート
+		if(index === 0) {
+			$scope.magics = _.sortBy(_.sortBy(_.sortBy(originalMagicList, 'rank'), 'fairyElementId'), 'skillId');
+		// 種別ソート
+		} else {
+			$scope.magics = _.sortBy(_.sortBy(_.sortBy(_.sortBy(originalMagicList, 'fairyElementId'), 'skillId'), 'rank'), 'categoryId');
+		}
 	};
 
 	// CSV出力は不要
@@ -207,6 +236,7 @@ app.controller('AppController', function($scope, $resource) {
 	// 	}
 	// };
 
+	// Excel出力ボタン押下イベント
 	$scope.outputExcel = function() {
 		var wopts = {
 			bookType: 'xlsx',
@@ -239,7 +269,9 @@ app.controller('AppController', function($scope, $resource) {
 	};
 
 	var init = function() {
+		console.log('init start');
 		getData();
+		console.log('init end');
 	};
 
 	init();
