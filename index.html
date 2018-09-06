@@ -41,10 +41,10 @@
 			</form>
 		</div>
 		<div ng-show="submitFlg">
-			<div>
+			<div class="buttons">
 				<h3>取得魔法一覧</h3>
-				<button ng-click="sortMagic(0)">ソート(系統)</button>
-				<button ng-click="sortMagic(1)">ソート(種別)</button>
+				<button class="sortButton" ng-click="sortMagic(0)">ソート({{headerList[0].displayName}})</button>
+				<button class="sortButton" ng-click="sortMagic(1)">ソート({{headerList[4].displayName}})</button>
 				<button class="outputButton" ng-click="outputExcel()">Excel出力</button>
 				<!-- CSV出力は不要では？
 				<button>

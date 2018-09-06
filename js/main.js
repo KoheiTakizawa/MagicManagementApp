@@ -5,7 +5,6 @@ app.controller('AppController', function($scope, $resource) {
 	var dataList = [];
 	var magicList = [];
 	var categoryList = [];
-	var headerList = [];
 	var originalMagicList = [];
 	var backgroundColors = [];
 	$scope.submitFlg = false;
@@ -24,9 +23,9 @@ app.controller('AppController', function($scope, $resource) {
 			$scope.skills = dataList.skills;
 			$scope.gods = dataList.gods;
 			$scope.fairyTamerElements = dataList.fairyTamerElements;
+			$scope.headerList = dataList.headers;
 			magicList = dataList.magics;
 			categoryList = dataList.categories;
-			headerList = dataList.headers;
 			backgroundColors = dataList.backgroundColors;
 		});
 
@@ -167,7 +166,6 @@ app.controller('AppController', function($scope, $resource) {
 		console.log("submit start");
 		// submitする度に初期化
 		$scope.magics = [];
-		$scope.headerList = headerList;
 		$scope.submitFlg = true;
 		// 真語魔法取得
 		if($scope.skills[0].checked){
@@ -203,7 +201,7 @@ app.controller('AppController', function($scope, $resource) {
 	// ソートに応じて系統か種別のカラムに背景色を付ける
 	$scope.getBackgroundColor = function(magic, header) {
 		// 系統ソートの場合
-		if(sortBySkill && header.displayName === headerList[0].displayName) {
+		if(sortBySkill && header.displayName === $scope.headerList[0].displayName) {
 			// 神聖魔法、妖精魔法以外
 			if(magic.skillId !== 3 && magic.skillId !== 5) {
 				return backgroundColors[0].colors[magic.skillId-1].color;
@@ -220,7 +218,7 @@ app.controller('AppController', function($scope, $resource) {
 				return backgroundColors[0].colors[magic.skillId-1].colors[magic.fairyElementId-1].color;
 			}
 		// 種別ソートの場合
-		} else if(!sortBySkill && header.displayName === headerList[4].displayName) {
+		} else if(!sortBySkill && header.displayName === $scope.headerList[4].displayName) {
 			return backgroundColors[1].colors[magic.categoryId-1].color;
 		}
 	};
@@ -243,15 +241,15 @@ app.controller('AppController', function($scope, $resource) {
 	// 	console.log('ouputCSV start');
 	// 	var csvText = '';
 	// 	var headerArray = [];
-	// 	for (var i = 0; i < headerList.length; i++) {
-	// 		headerArray.push(headerList[i].displayName);
+	// 	for (var i = 0; i < $scope.headerList.length; i++) {
+	// 		headerArray.push($scope.headerList[i].displayName);
 	// 	}
 	// 	csvText = headerArray.join() + '\n';
 
 	// 	$scope.magics.map(function(magic) {
 	// 		var magicTextArray = [];
-	// 		for(var i = 0; i < headerList.length; i++) {
-	// 			magicTextArray.push(magic[headerList[i].name]);
+	// 		for(var i = 0; i < $scope.headerList.length; i++) {
+	// 			magicTextArray.push(magic[$scope.headerList[i].name]);
 	// 		}
 	// 		csvText = csvText + magicTextArray.join() + '\n';
 	// 	});
