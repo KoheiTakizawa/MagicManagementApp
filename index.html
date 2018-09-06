@@ -60,7 +60,7 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="magic in magics">
-						<td ng-repeat="header in headerList">{{magic[header.name]}}</td>
+						<td ng-repeat="header in headerList" ng-style="{backgroundColor:getBackgroundColor({{magic}}, {{header}})}">{{magic[header.name]}}</td>
 					</tr>
 				</tbody>
 			</table>

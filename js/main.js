@@ -7,11 +7,13 @@ app.controller('AppController', function($scope, $resource) {
 	var categoryList = [];
 	var headerList = [];
 	var originalMagicList = [];
+	var backgroundColors = [];
 	$scope.submitFlg = false;
 	$scope.isPriest = false;
 	$scope.isFairyTamer = false;
 	$scope.magics = [];
 	$scope.headerList = [];
+	var sortBySkill = true;
 
 	// jsonファイルからデータを取得
 	var getData = function() {
@@ -25,6 +27,7 @@ app.controller('AppController', function($scope, $resource) {
 			magicList = dataList.magics;
 			categoryList = dataList.categories;
 			headerList = dataList.headers;
+			backgroundColors = dataList.backgroundColors;
 		});
 
 		console.log('getData end');
@@ -197,12 +200,40 @@ app.controller('AppController', function($scope, $resource) {
 		console.log('submit finished');
 	};
 
+	// ソートに応じて系統か種別のカラムに背景色を付ける
+	$scope.getBackgroundColor = function(magic, header) {
+		// 系統ソートの場合
+		if(sortBySkill && header.displayName === headerList[0].displayName) {
+			// 神聖魔法、妖精魔法以外
+			if(magic.skillId !== 3 && magic.skillId !== 5) {
+				return backgroundColors[0].colors[magic.skillId-1].color;
+			}
+			// 神聖魔法
+			if(magic.skillId === 3) {
+				if(magic.godId === 0) {
+					return backgroundColors[0].colors[magic.skillId-1].colors[0].color;
+				}
+				return backgroundColors[0].colors[magic.skillId-1].colors[1].color;
+			}
+			// 妖精魔法
+			if(magic.skillId === 5) {
+				return backgroundColors[0].colors[magic.skillId-1].colors[magic.fairyElementId-1].color;
+			}
+		// 種別ソートの場合
+		} else if(!sortBySkill && header.displayName === headerList[4].displayName) {
+			return backgroundColors[1].colors[magic.categoryId-1].color;
+		}
+	};
+
+	// ソートボタン押下イベント
 	$scope.sortMagic = function(index) {
 		// 系統ソート
 		if(index === 0) {
+			sortBySkill = true;
 			$scope.magics = _.sortBy(_.sortBy(_.sortBy(originalMagicList, 'rank'), 'fairyElementId'), 'skillId');
 		// 種別ソート
 		} else {
+			sortBySkill = false;
 			$scope.magics = _.sortBy(_.sortBy(_.sortBy(_.sortBy(originalMagicList, 'fairyElementId'), 'skillId'), 'rank'), 'categoryId');
 		}
 	};

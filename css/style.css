@@ -26,7 +26,7 @@ button.outputButton {
 }
 
 table {
-	border:1px #000000 solid;
+	border:2px #000000 solid;
 	border-collapse: collapse;
 	width:100%;
 }
@@ -37,7 +37,12 @@ th,td {
 }
 
 th {
-	border:1px #000000 solid;
+	background-color:black;
+	color:white;
+	border-right:1px #FFFFFF solid;
+}
+th:last-child{
+	border-right:1px #000000 solid;
 }
 
 td {
