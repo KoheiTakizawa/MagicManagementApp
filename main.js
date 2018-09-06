@@ -112,8 +112,8 @@ app.controller('AppController', function($scope, $resource) {
 			if(i < 6) {	// 土、水・氷、炎、風、光、闇の場合
 				targetElementNumber = $scope.fairyTamerElements[i].level;
 				otherElementsNumber = targetElementNumber !== 0 ? totalFairyNumber - targetElementNumber : 0;
-				upperLimitRank = targetElementNumber + Math.floor/*ceilどっちだっけ*/(otherElementsNumber / 2) <= targetElementNumber * 2 ?
-					targetElementNumber + Math.floor(otherElementsNumber / 2) :
+				upperLimitRank = targetElementNumber + Math.ceil(otherElementsNumber / 2) <= targetElementNumber * 2 ?
+					targetElementNumber + Math.ceil(otherElementsNumber / 2) :
 					targetElementNumber * 2;
 				addFairyTamerMagic(index, i, upperLimitRank, magicList[index].skillName);
 				// 現在最低レベルと当該属性のレベルを比較し、下回れば更新 ⇒ Math.min()がNaN返すんだけどなんで？

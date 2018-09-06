@@ -28,7 +28,7 @@
 						</div>
 						<div ng-show="isFairyTamer">
 							<div ng-repeat="element in fairyTamerElements | filter:ftFilter">
-								<lavel>{{element.name}}</lavel>
+								<label class="col-3">{{element.name}}</label>
 								<input type="number" max=15 min=0 ng-init="element.level=0" ng-model="element.level">
 							</div>
 						</div>
