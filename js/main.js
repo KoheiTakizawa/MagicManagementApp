@@ -175,11 +175,6 @@ app.controller('AppController', function($scope, $resource) {
 		if($scope.skills[1].checked){
 			getStandardMagics(1, $scope.skills[1].level);
 		}
-		// 深智魔法取得
-		if($scope.skills[0].checked && $scope.skills[1].checked) {
-			var skillLevel = $scope.skills[0].level <= $scope.skills[1].level ? $scope.skills[0].level : $scope.skills[1].level;
-			getStandardMagics(5, skillLevel);
-		}
 		// 神聖魔法取得
 		if($scope.skills[2].checked){
 			getPriestMagics(2, $scope.skills[2].level);
@@ -191,6 +186,11 @@ app.controller('AppController', function($scope, $resource) {
 		// 妖精魔法取得
 		if($scope.skills[4].checked){
 			getFairyTamerMagicList(4, $scope.skills[4].level);
+		}
+		// 深智魔法取得
+		if($scope.skills[0].checked && $scope.skills[1].checked) {
+			var skillLevel = $scope.skills[0].level <= $scope.skills[1].level ? $scope.skills[0].level : $scope.skills[1].level;
+			getStandardMagics(5, skillLevel);
 		}
 
 		originalMagicList = $scope.magics;
@@ -228,11 +228,11 @@ app.controller('AppController', function($scope, $resource) {
 		// 系統ソート
 		if(index === 0) {
 			sortBySkill = true;
-			$scope.magics = _.sortBy(_.sortBy(_.sortBy(originalMagicList, 'rank'), 'fairyElementId'), 'skillId');
+			$scope.magics = _.sortBy(_.sortBy(_.sortBy(_.sortBy(originalMagicList, 'rank'), 'fairyElementId'), 'godId'), 'skillId');
 		// 種別ソート
 		} else {
 			sortBySkill = false;
-			$scope.magics = _.sortBy(_.sortBy(_.sortBy(_.sortBy(originalMagicList, 'fairyElementId'), 'skillId'), 'rank'), 'categoryId');
+			$scope.magics = _.sortBy(_.sortBy(_.sortBy(_.sortBy(_.sortBy(originalMagicList, 'fairyElementId'), 'godId'), 'skillId'), 'rank'), 'categoryId');
 		}
 	};
 
