@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja" ng-app="mmApp">
 <head>
-	<title>SW2.5管理</title>
+	<title>SW2.5魔法管理アプリ</title>
 	<link href="css/style.css" rel="stylesheet">
 	<script src="lib/angular-1.7.2/angular.js"></script>
 	<script src="lib/angular-1.7.2/angular-resource.js"></script>
@@ -12,13 +12,15 @@
 </head>
 <body class="container">
 	<div ng-controller="AppController">
-		<h1>SW2.5管理</h1>
+		<h1>SW2.5魔法管理アプリ</h1>
 		<div>
 			<form ng-submit="submit()">
 				<div class="charaInfomation">
 					<div>
-						<label class="col-1">取得技能</label>
-						<label>技能レベル</label>
+						<div class="label_wrapper">
+							<label class="col-1">取得技能</label>
+							<label>技能レベル</label>
+						</div>
 						<div class="skillInput" ng-repeat="skill in skills">
 							<input type="checkbox" ng-model="skill.checked"><label class="col-2">{{skill.name}}</label>
 							<input ng-disabled="isChecked({{skill.id}})" type="number" max=15 min=1 ng-init="skill.level=1" ng-model="skill.level">
@@ -36,12 +38,12 @@
 					</div>
 				</div>
 				<div>
-					<button type="submit" class="btn">表示</button>
+					<button type="submit" class="submitButton">表示</button>
 				</div>
 			</form>
 		</div>
 		<div ng-show="submitFlg">
-			<div class="buttons">
+			<div class="button_wrapper">
 				<h3>取得魔法一覧</h3>
 				<button class="sortButton" ng-click="sortMagic(0)">ソート({{headerList[0].displayName}})</button>
 				<button class="sortButton" ng-click="sortMagic(1)">ソート({{headerList[4].displayName}})</button>
