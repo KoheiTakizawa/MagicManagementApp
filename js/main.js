@@ -14,6 +14,37 @@ app.controller('AppController', function($scope, $resource) {
 	$scope.headerList = [];
 	var sortBySkill = true;
 
+	// skillインデックス格納用変数
+	var sorcererSI;
+	var conjurerSI;
+	var priestSI;
+	var magitecSI;
+	var fairyTamerSI;
+
+	// skillId格納用変数
+	var sorcererSId;
+	var conjurerSId;
+	var priestSId;
+	var magitecSId;
+	var fairyTamerSId;
+
+	// magicインデックス格納用変数
+	var sorcererMI;
+	var conjurerMI;
+	var wizardMI;
+	var priestMI;
+	var magitecMI;
+	var fairyTamerMI;
+
+	// magicId格納用変数
+	 var sorcererMId;
+	 var conjurerMId;
+	 var wizardMId;
+	 var priestMId;
+	 var magitecMId;
+	 var fairyTamerMId;
+
+
 	// jsonファイルからデータを取得
 	var getData = function() {
 		console.log('getData start');
@@ -27,14 +58,57 @@ app.controller('AppController', function($scope, $resource) {
 			magicList = dataList.magics;
 			categoryList = dataList.categories;
 			backgroundColors = dataList.backgroundColors;
+
+			// skillIndex,skillIdを格納
+			for(var si = 0; si < dataList.skills.length; si++) {
+				if(dataList.skills[si].name === 'ソーサラー') {
+					sorcererSI = si;
+					sorcererSId = dataList.skills[si].id;
+				} else if(dataList.skills[si].name === 'コンジャラー') {
+					conjurerSI = si;
+					conjurerSId = dataList.skills[si].id;
+				} else if(dataList.skills[si].name === 'プリースト') {
+					priestSI = si;
+					priestSId = dataList.skills[si].id;
+				} else if(dataList.skills[si].name === 'マギテック') {
+					magitecSI = si;
+					magitecSId = dataList.skills[si].id;
+				} else if(dataList.skills[si].name === 'フェアリーテイマー') {
+					fairyTamerSI = si;
+					fairyTamerSId = dataList.skills[si].id;
+				}
+			}
+
+			// magicIndex,magicIdを格納
+			for(var mi = 0; mi < magicList.length; mi++) {
+				if(magicList[mi].skillName === '真語魔法') {
+					sorcererMI = mi;
+					sorcererMId = dataList.magics[mi].magicId;
+				} else if(magicList[mi].skillName === '操霊魔法') {
+					conjurerMI = mi;
+					conjurerMId = dataList.magics[mi].magicId;
+				} else if(magicList[mi].skillName === '深智魔法') {
+					wizardMI = mi;
+					wizardMId = dataList.magics[mi].magicId;
+				} else if(magicList[mi].skillName === '神聖魔法') {
+					priestMI = mi;
+					priestMId = dataList.magics[mi].magicId;
+				} else if(magicList[mi].skillName === '魔導機術') {
+					magitecMI = mi;
+					magitecMId = dataList.magics[mi].magicId;
+				} else if(magicList[mi].skillName === '妖精魔法') {
+					fairyTamerMI = mi;
+					fairyTamerMId = dataList.magics[mi].magicId;
+				}
+			}
 		});
 
 		console.log('getData end');
 	};
 
 	// 信仰する神のinput表示制御
-	var isPriest = function(index) {
-		if($scope.skills[index].checked) {
+	var isPriest = function() {
+		if($scope.skills[priestSI].checked) {
 			$scope.isPriest = true;
 			return;
 		}
@@ -43,8 +117,8 @@ app.controller('AppController', function($scope, $resource) {
 	};
 
 	// 契約属性のinput表示制御
-	var isFairyTamer = function(index) {
-		if($scope.skills[index].checked) {
+	var isFairyTamer = function() {
+		if($scope.skills[fairyTamerSI].checked) {
 			$scope.isFairyTamer = true;
 			return;
 		}
@@ -55,12 +129,12 @@ app.controller('AppController', function($scope, $resource) {
 	// 技能レベルinputのdisabled制御
 	$scope.isChecked = function(skillId) {
 		// プリーストかチェック
-		if(skillId === 3) {
-			isPriest(skillId-1);
+		if(skillId === priestSId) {
+			isPriest();
 		}
 		// フェアリーテイマーかチェック
-		if(skillId === 5) {
-			isFairyTamer(skillId-1);
+		if(skillId === fairyTamerSId) {
+			isFairyTamer();
 		}
 		// チェックが付いているならdisabledはfalse
 		if($scope.skills[skillId-1].checked) {
@@ -82,9 +156,9 @@ app.controller('AppController', function($scope, $resource) {
 			totalFairy = totalFairy + $scope.fairyTamerElements[i].level;
 		}
 		$scope.fairyTamerElements.forEach(function(element){
-			fairyCapacity = element.level + ($scope.skills[4].level * 2 - totalFairy);
+			fairyCapacity = element.level + ($scope.skills[fairyTamerSI].level * 2 - totalFairy);
 			// フェアリーテイマー技能レベルが最大値
-			element.max = fairyCapacity < $scope.skills[4].level ? fairyCapacity : $scope.skills[4].level;
+			element.max = fairyCapacity < $scope.skills[fairyTamerSI].level ? fairyCapacity : $scope.skills[fairyTamerSI].level;
 		});
 	};
 
@@ -92,7 +166,7 @@ app.controller('AppController', function($scope, $resource) {
 	var getStandardMagics = function(index, skillLevel) {
 		magicList[index].magics.map(function(magic) {
 			if(magic.rank <= skillLevel) {
-				magic.skillId = magicList[index].skillId;
+				magic.magicId = magicList[index].magicId;
 				magic.skillName = magicList[index].skillName;
 				magic.category = categoryList[magic.categoryId-1].name;
 				$scope.magics.push(magic);
@@ -106,7 +180,7 @@ app.controller('AppController', function($scope, $resource) {
 		console.log($scope.selectedGod.id);
 		magicList[index].magics.map(function(magic) {
 			if((magic.godId === 0 && magic.rank <= skillLevel) || (magic.godId === $scope.selectedGod.id && magic.rank <= skillLevel)) {
-				magic.skillId = magicList[index].skillId;
+				magic.magicId = magicList[index].magicId;
 				magic.skillName = magic.godId === 0 ? magicList[index].skillName : '特殊' + magicList[index].skillName;
 				magic.category = categoryList[magic.categoryId-1].name;
 				$scope.magics.push(magic);
@@ -118,7 +192,7 @@ app.controller('AppController', function($scope, $resource) {
 	var addFairyTamerMagic = function(index, i, upperLimitRank, skillName) {
 		magicList[index].magics.map(function(magic) {
 			if (magic.fairyElementId === i + 1 && magic.rank <= upperLimitRank) {
-				magic.skillId = magicList[index].skillId;
+				magic.magicId = magicList[index].magicId;
 				magic.skillName = skillName + '(' + $scope.fairyTamerElements[i].name + ')';
 				magic.category = categoryList[magic.categoryId-1].name;
 				$scope.magics.push(magic);
@@ -167,30 +241,31 @@ app.controller('AppController', function($scope, $resource) {
 		// submitする度に初期化
 		$scope.magics = [];
 		$scope.submitFlg = true;
+
 		// 真語魔法取得
-		if($scope.skills[0].checked){
-			getStandardMagics(0, $scope.skills[0].level);
+		if($scope.skills[sorcererSI].checked){
+			getStandardMagics(sorcererMI, $scope.skills[sorcererSI].level);
 		}
 		// 操霊魔法取得
-		if($scope.skills[1].checked){
-			getStandardMagics(1, $scope.skills[1].level);
+		if($scope.skills[conjurerSI].checked){
+			getStandardMagics(conjurerMI, $scope.skills[conjurerSI].level);
 		}
 		// 深智魔法取得
-		if($scope.skills[0].checked && $scope.skills[1].checked) {
-			var skillLevel = $scope.skills[0].level <= $scope.skills[1].level ? $scope.skills[0].level : $scope.skills[1].level;
-			getStandardMagics(2, skillLevel);
+		if($scope.skills[sorcererSI].checked && $scope.skills[conjurerSI].checked) {
+			var skillLevel = $scope.skills[sorcererSI].level <= $scope.skills[conjurerSI].level ? $scope.skills[sorcererSI].level : $scope.skills[conjurerSI].level;
+			getStandardMagics(wizardMI, skillLevel);
 		}
 		// 神聖魔法取得
-		if($scope.skills[2].checked){
-			getPriestMagics(3, $scope.skills[2].level);
+		if($scope.skills[priestSI].checked){
+			getPriestMagics(priestMI, $scope.skills[priestSI].level);
 		}
 		// 魔導機術取得
-		if($scope.skills[3].checked){
-			getStandardMagics(4, $scope.skills[3].level);
+		if($scope.skills[magitecSI].checked){
+			getStandardMagics(magitecMI, $scope.skills[magitecSI].level);
 		}
 		// 妖精魔法取得
-		if($scope.skills[4].checked){
-			getFairyTamerMagicList(5, $scope.skills[4].level);
+		if($scope.skills[fairyTamerSI].checked){
+			getFairyTamerMagicList(fairyTamerMI, $scope.skills[fairyTamerSI].level);
 		}
 
 		originalMagicList = $scope.magics;
@@ -203,19 +278,19 @@ app.controller('AppController', function($scope, $resource) {
 		// 系統ソートの場合
 		if(sortBySkill && header.displayName === $scope.headerList[0].displayName) {
 			// 神聖魔法、妖精魔法以外
-			if(magic.skillId !== 4 && magic.skillId !== 6) {
-				return backgroundColors[0].colors[magic.skillId-1].color;
+			if(magic.magicId !== priestMId && magic.magicId !== fairyTamerMId) {
+				return backgroundColors[0].colors[magic.magicId-1].color;
 			}
 			// 神聖魔法
-			if(magic.skillId === 4) {
+			if(magic.magicId === priestMId) {
 				if(magic.godId === 0) {
-					return backgroundColors[0].colors[magic.skillId-1].colors[0].color;
+					return backgroundColors[0].colors[magic.magicId-1].colors[0].color;
 				}
-				return backgroundColors[0].colors[magic.skillId-1].colors[1].color;
+				return backgroundColors[0].colors[magic.magicId-1].colors[1].color;
 			}
 			// 妖精魔法
-			if(magic.skillId === 6) {
-				return backgroundColors[0].colors[magic.skillId-1].colors[magic.fairyElementId-1].color;
+			if(magic.magicId === fairyTamerMId) {
+				return backgroundColors[0].colors[magic.magicId-1].colors[magic.fairyElementId-1].color;
 			}
 		// 種別ソートの場合
 		} else if(!sortBySkill && header.displayName === $scope.headerList[4].displayName) {
@@ -299,7 +374,9 @@ app.controller('AppController', function($scope, $resource) {
 
 	var init = function() {
 		console.log('init start');
+
 		getData();
+
 		console.log('init end');
 	};
 
