@@ -138,3 +138,54 @@ td:nth-child(13) {
 	text-align:left;
 	width:300px;
 }
+
+input[type=checkbox] {
+  display: none;
+}
+.check_css {
+  -webkit-transition: background-color 0.2s linear;
+  transition: background-color 0.2s linear;
+  position: relative;
+  display: inline-block;
+  padding: 0 0 0 42px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.check_css:hover:after {
+  border-color: #0171bd;
+}
+.check_css:after {
+  -webkit-transition: border-color 0.2s linear;
+  transition: border-color 0.2s linear;
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  display: block;
+  margin-top: -10px;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  content: '';
+}
+.check_css:before {
+  -webkit-transition: opacity 0.2s linear;
+  transition: opacity 0.2s linear;
+  position: absolute;
+  top: 50%;
+  left: 21px;
+  display: block;
+  margin-top: -7px;
+  width: 5px;
+  height: 9px;
+  border-right: 3px solid #0171bd;
+  border-bottom: 3px solid #0171bd;
+  content: '';
+  opacity: 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+input[type=checkbox]:checked + .check_css:before {
+  opacity: 1;
+}
