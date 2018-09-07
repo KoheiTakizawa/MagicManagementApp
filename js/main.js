@@ -250,14 +250,11 @@ app.controller('AppController', function($scope, $resource) {
 		if($scope.skills[conjurerSI].checked){
 			getStandardMagics(conjurerMI, $scope.skills[conjurerSI].level);
 		}
-<<<<<<< HEAD
 		// 深智魔法取得
 		if($scope.skills[sorcererSI].checked && $scope.skills[conjurerSI].checked) {
 			var skillLevel = $scope.skills[sorcererSI].level <= $scope.skills[conjurerSI].level ? $scope.skills[sorcererSI].level : $scope.skills[conjurerSI].level;
 			getStandardMagics(wizardMI, skillLevel);
 		}
-=======
->>>>>>> c8c2ecdf6f3b8f8d2f310be6cdba49af5db5ecc1
 		// 神聖魔法取得
 		if($scope.skills[priestSI].checked){
 			getPriestMagics(priestMI, $scope.skills[priestSI].level);
@@ -269,11 +266,6 @@ app.controller('AppController', function($scope, $resource) {
 		// 妖精魔法取得
 		if($scope.skills[fairyTamerSI].checked){
 			getFairyTamerMagicList(fairyTamerMI, $scope.skills[fairyTamerSI].level);
-		}
-		// 深智魔法取得
-		if($scope.skills[0].checked && $scope.skills[1].checked) {
-			var skillLevel = $scope.skills[0].level <= $scope.skills[1].level ? $scope.skills[0].level : $scope.skills[1].level;
-			getStandardMagics(5, skillLevel);
 		}
 
 		originalMagicList = $scope.magics;
