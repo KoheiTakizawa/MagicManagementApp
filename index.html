@@ -15,25 +15,27 @@
 		<h1>SW2.5魔法管理アプリ</h1>
 		<div>
 			<form ng-submit="submit()">
-				<div class="charaInfomation">
-					<div>
+				<div class="charaInformation">
+					<div class="default_wrapper">
 						<div class="label_wrapper">
 							<label class="col-1">取得技能</label>
 							<label>技能レベル</label>
 						</div>
-						<div class="skillInput" ng-repeat="skill in skills">
-							<input type="checkbox" ng-model="skill.checked" id="{{skill.id}}"><label for="{{skill.id}}" class="col-2 check_css">{{skill.name}}</label>
-							<input ng-disabled="isChecked({{skill.id}})" type="number" max=15 min=1 ng-init="skill.level=1" ng-model="skill.level">
-						</div>
-						<div ng-show="isPriest">
-							<label>信仰する神</label>
-							<select ng-model="selectedGod" ng-options="god.name for god in gods"></select>
-						</div>
-						<div ng-show="isFairyTamer">
-							<div ng-repeat="element in fairyTamerElements | filter:ftFilter">
-								<label class="col-3">{{element.name}}</label>
-								<input type="number" max={{element.max}} min=0 ng-init="element.level=0" ng-model="element.level" ng-keyup="changeMax()" ng-mouseup="changeMax()">
+						<div class="skill_wrapper">
+							<div class="skillInput" ng-repeat="skill in skills">
+								<input type="checkbox" ng-model="skill.checked" id="{{skill.id}}"><label for="{{skill.id}}" class="col-2 check_css">{{skill.name}}</label>
+								<input ng-disabled="isChecked({{skill.id}})" type="number" max=15 min=1 ng-init="skill.level=1" ng-model="skill.level">
 							</div>
+						</div>
+					</div>
+					<div ng-show="isPriest" class="priest_wrapper">
+						<label>信仰する神</label>
+						<select ng-model="selectedGod" ng-options="god.name for god in gods"></select>
+					</div>
+					<div ng-show="isFairyTamer" class="fairytamer_wrapper">
+						<div ng-repeat="element in fairyTamerElements | filter:ftFilter">
+							<label class="col-3">{{element.name}}</label>
+							<input type="number" max={{element.max}} min=0 ng-init="element.level=0" ng-model="element.level" ng-keyup="changeMax()" ng-mouseup="changeMax()">
 						</div>
 					</div>
 				</div>

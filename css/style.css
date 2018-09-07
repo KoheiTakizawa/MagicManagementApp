@@ -12,7 +12,15 @@ h1 {
 }
 
 div.label_wrapper label {
+	padding-left:15px;
+}
 
+div.charaInformation>div {
+	display:inline-block;
+}
+
+div.default_wrapper, div.priest_wrapper, div.fairytamer_wrapper {
+	padding-left:15px;
 }
 
 label.col-1 {
