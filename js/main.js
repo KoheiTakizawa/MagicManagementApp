@@ -1,6 +1,6 @@
 var app = angular.module('mmApp', ['ngResource']);
 
-app.controller('AppController', function($scope, $resource) {
+app.controller('AppController', ($scope, $resource) => {
 
 	var dataList = [];
 	var magicList = [];
@@ -46,10 +46,10 @@ app.controller('AppController', function($scope, $resource) {
 
 
 	// jsonファイルからデータを取得
-	var getData = function() {
+	var getData = () => {
 		console.log('getData start');
 
-		$resource('./source/data.json').get(function(data) {
+		$resource('./source/data.json').get(data => {
 			dataList = data;
 			$scope.skills = dataList.skills;
 			$scope.gods = dataList.gods;
@@ -60,7 +60,7 @@ app.controller('AppController', function($scope, $resource) {
 			backgroundColors = dataList.backgroundColors;
 
 			// skillIndex,skillIdを格納
-			dataList.skills.forEach(function(skill, index) {
+			dataList.skills.forEach((skill, index) => {
 				if(skill.name === 'ソーサラー') {
 					sorcererSI = index;
 					sorcererSId = skill.id;
@@ -80,7 +80,7 @@ app.controller('AppController', function($scope, $resource) {
 			});
 
 			// magicIndex,magicIdを格納
-			magicList.forEach(function(magic, index) {
+			magicList.forEach((magic, index) => {
 				if(magic.skillName === '真語魔法') {
 					sorcererMI = index;
 					sorcererMId = magic.magicId;
@@ -107,7 +107,7 @@ app.controller('AppController', function($scope, $resource) {
 	};
 
 	// 信仰する神のinput表示制御
-	var isPriest = function() {
+	var isPriest = () => {
 		if($scope.skills[priestSI].checked) {
 			$scope.isPriest = true;
 			return;
@@ -117,7 +117,7 @@ app.controller('AppController', function($scope, $resource) {
 	};
 
 	// 契約属性のinput表示制御
-	var isFairyTamer = function() {
+	var isFairyTamer = () => {
 		if($scope.skills[fairyTamerSI].checked) {
 			$scope.isFairyTamer = true;
 			return;
@@ -127,7 +127,7 @@ app.controller('AppController', function($scope, $resource) {
 	};
 
 	// 技能レベルinputのdisabled制御
-	$scope.isChecked = function(skillId) {
+	$scope.isChecked = skillId => {
 		// プリーストかチェック
 		if(skillId === priestSId) {
 			isPriest();
@@ -144,18 +144,18 @@ app.controller('AppController', function($scope, $resource) {
 	};
 
 	// ng-repeat契約属性から基本と特殊を外す
-	$scope.ftFilter = function(element) {
+	$scope.ftFilter = element => {
 		return element.id < 7 ? true : false;
 	};
 
 	// 妖精魔法各属性の入力上限値を監視
-	$scope.changeMax = function() {
+	$scope.changeMax = () => {
 		var totalFairy = 0;
 		var fairyCapacity = 0;
 		for(var i = 0; i < 6; i++) {
 			totalFairy = totalFairy + $scope.fairyTamerElements[i].level;
 		}
-		$scope.fairyTamerElements.forEach(function(element){
+		$scope.fairyTamerElements.forEach(element => {
 			fairyCapacity = element.level + ($scope.skills[fairyTamerSI].level * 2 - totalFairy);
 			// フェアリーテイマー技能レベルが最大値
 			element.max = fairyCapacity < $scope.skills[fairyTamerSI].level ? fairyCapacity : $scope.skills[fairyTamerSI].level;
@@ -163,8 +163,8 @@ app.controller('AppController', function($scope, $resource) {
 	};
 
 	// ソーサラー、コンジャラー、マギテック用魔法取得
-	var getStandardMagics = function(index, skillLevel) {
-		magicList[index].magics.map(function(magic) {
+	var getStandardMagics = (index, skillLevel) => {
+		magicList[index].magics.map(magic => {
 			if(magic.rank <= skillLevel) {
 				magic.magicId = magicList[index].magicId;
 				magic.skillName = magicList[index].skillName;
@@ -175,8 +175,8 @@ app.controller('AppController', function($scope, $resource) {
 	};
 
 	// プリースト用魔法取得
-	var getPriestMagics = function(index, skillLevel) {
-		magicList[index].magics.map(function(magic) {
+	var getPriestMagics = (index, skillLevel) => {
+		magicList[index].magics.map(magic => {
 			if((magic.godId === 0 && magic.rank <= skillLevel) || (magic.godId === $scope.selectedGod.id && magic.rank <= skillLevel)) {
 				magic.magicId = magicList[index].magicId;
 				magic.skillName = magic.godId === 0 ? magicList[index].skillName : '特殊' + magicList[index].skillName;
@@ -187,8 +187,8 @@ app.controller('AppController', function($scope, $resource) {
 	};
 
 	// フェアリーテイマー魔法フィルタ
-	var addFairyTamerMagic = function(index, i, upperLimitRank, skillName) {
-		magicList[index].magics.map(function(magic) {
+	var addFairyTamerMagic = (index, i, upperLimitRank, skillName) => {
+		magicList[index].magics.map(magic => {
 			if (magic.fairyElementId === i + 1 && magic.rank <= upperLimitRank) {
 				magic.magicId = magicList[index].magicId;
 				magic.skillName = skillName + '(' + $scope.fairyTamerElements[i].name + ')';
@@ -200,7 +200,7 @@ app.controller('AppController', function($scope, $resource) {
 	};
 
 	// フェアリーテイマー用魔法取得
-	var getFairyTamerMagicList = function(index, skillLevel) {
+	var getFairyTamerMagicList = (index, skillLevel) => {
 		// 総契約妖精数
 		var totalFairyNumber = skillLevel * 2;
 		// 当該属性の契約妖精数
@@ -211,7 +211,7 @@ app.controller('AppController', function($scope, $resource) {
 		var upperLimitRank;
 		// 各属性の最低レベル、判定用に初期値100
 		var availableSpecialLevel = 100;
-		$scope.fairyTamerElements.forEach(function(element, i) {
+		$scope.fairyTamerElements.forEach((element, i) => {
 			if(i < 6) { // 土、水・氷、炎、風、光、闇の場合
 				targetElementNumber = element.level;
 				otherElementsNumber = targetElementNumber !== 0 ? totalFairyNumber - targetElementNumber : 0;
@@ -234,7 +234,7 @@ app.controller('AppController', function($scope, $resource) {
 	};
 
 	// 表示ボタン押下イベント
-	$scope.submit = function() {
+	$scope.submit = () => {
 		console.log("submit start");
 		// submitする度に初期化
 		$scope.magics = [];
@@ -273,7 +273,7 @@ app.controller('AppController', function($scope, $resource) {
 	};
 
 	// ソートに応じて系統か種別のカラムに背景色を付ける
-	$scope.getBackgroundColor = function(magic, header) {
+	$scope.getBackgroundColor = (magic, header) => {
 		// 系統ソートの場合
 		if(sortByMagicId && header.displayName === $scope.headerList[0].displayName) {
 			// 神聖魔法、妖精魔法以外
@@ -298,7 +298,7 @@ app.controller('AppController', function($scope, $resource) {
 	};
 
 	// ソートボタン押下イベント
-	$scope.sortMagic = function(index) {
+	$scope.sortMagic = index => {
 		// 系統ソート
 		if(index === 0) {
 			sortByMagicId = true;
@@ -311,7 +311,7 @@ app.controller('AppController', function($scope, $resource) {
 	};
 
 	// CSV出力は不要
-	// $scope.outputCSV = function() {
+	// $scope.outputCSV = () => {
 	// 	console.log('ouputCSV start');
 	// 	var csvText = '';
 	// 	var headerArray = [];
@@ -320,7 +320,7 @@ app.controller('AppController', function($scope, $resource) {
 	// 	}
 	// 	csvText = headerArray.join() + '\n';
 
-	// 	$scope.magics.map(function(magic) {
+	// 	$scope.magics.map(magic => {
 	// 		var magicTextArray = [];
 	// 		for(var i = 0; i < $scope.headerList.length; i++) {
 	// 			magicTextArray.push(magic[$scope.headerList[i].name]);
@@ -340,7 +340,7 @@ app.controller('AppController', function($scope, $resource) {
 	// };
 
 	// Excel出力ボタン押下イベント
-	$scope.outputExcel = function() {
+	$scope.outputExcel = () => {
 		var wopts = {
 			bookType: 'xlsx',
 			bookSST: false,
@@ -348,7 +348,7 @@ app.controller('AppController', function($scope, $resource) {
 		};
 		var workbook = {SheetNames: [], Sheets: {}};
 
-		document.querySelectorAll('table.table-to-export').forEach(function (currentValue, index) {
+		document.querySelectorAll('table.table-to-export').forEach((currentValue, index) => {
 			var n = currentValue.getAttribute('data-sheet-name');
 			if (!n) {
 				n = 'Sheet' + index;
@@ -371,7 +371,7 @@ app.controller('AppController', function($scope, $resource) {
 		saveAs(new Blob([s2ab(wbout)], {type: 'application/octet-stream'}), '取得魔法一覧.xlsx');
 	};
 
-	var init = function() {
+	var init = () => {
 		console.log('init start');
 
 		getData();
