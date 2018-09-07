@@ -178,19 +178,19 @@ app.controller('AppController', function($scope, $resource) {
 		// 深智魔法取得
 		if($scope.skills[0].checked && $scope.skills[1].checked) {
 			var skillLevel = $scope.skills[0].level <= $scope.skills[1].level ? $scope.skills[0].level : $scope.skills[1].level;
-			getStandardMagics(5, skillLevel);
+			getStandardMagics(2, skillLevel);
 		}
 		// 神聖魔法取得
 		if($scope.skills[2].checked){
-			getPriestMagics(2, $scope.skills[2].level);
+			getPriestMagics(3, $scope.skills[2].level);
 		}
 		// 魔導機術取得
 		if($scope.skills[3].checked){
-			getStandardMagics(3, $scope.skills[3].level);
+			getStandardMagics(4, $scope.skills[3].level);
 		}
 		// 妖精魔法取得
 		if($scope.skills[4].checked){
-			getFairyTamerMagicList(4, $scope.skills[4].level);
+			getFairyTamerMagicList(5, $scope.skills[4].level);
 		}
 
 		originalMagicList = $scope.magics;
@@ -203,18 +203,18 @@ app.controller('AppController', function($scope, $resource) {
 		// 系統ソートの場合
 		if(sortBySkill && header.displayName === $scope.headerList[0].displayName) {
 			// 神聖魔法、妖精魔法以外
-			if(magic.skillId !== 3 && magic.skillId !== 5) {
+			if(magic.skillId !== 4 && magic.skillId !== 6) {
 				return backgroundColors[0].colors[magic.skillId-1].color;
 			}
 			// 神聖魔法
-			if(magic.skillId === 3) {
+			if(magic.skillId === 4) {
 				if(magic.godId === 0) {
 					return backgroundColors[0].colors[magic.skillId-1].colors[0].color;
 				}
 				return backgroundColors[0].colors[magic.skillId-1].colors[1].color;
 			}
 			// 妖精魔法
-			if(magic.skillId === 5) {
+			if(magic.skillId === 6) {
 				return backgroundColors[0].colors[magic.skillId-1].colors[magic.fairyElementId-1].color;
 			}
 		// 種別ソートの場合
