@@ -52,6 +52,7 @@ app.controller('AppController', ($scope, $resource) => {
 			dataList = data;
 			$scope.skills = dataList.skills;
 			$scope.gods = dataList.gods;
+			$scope.selectedGod = $scope.gods[0];
 			$scope.fairyTamerElements = dataList.fairyTamerElements;
 			$scope.headerList = dataList.headers;
 			magicList = dataList.magics;
