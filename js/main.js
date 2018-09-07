@@ -60,47 +60,47 @@ app.controller('AppController', function($scope, $resource) {
 			backgroundColors = dataList.backgroundColors;
 
 			// skillIndex,skillIdを格納
-			for(var si = 0; si < dataList.skills.length; si++) {
-				if(dataList.skills[si].name === 'ソーサラー') {
-					sorcererSI = si;
-					sorcererSId = dataList.skills[si].id;
-				} else if(dataList.skills[si].name === 'コンジャラー') {
-					conjurerSI = si;
-					conjurerSId = dataList.skills[si].id;
-				} else if(dataList.skills[si].name === 'プリースト') {
-					priestSI = si;
-					priestSId = dataList.skills[si].id;
-				} else if(dataList.skills[si].name === 'マギテック') {
-					magitecSI = si;
-					magitecSId = dataList.skills[si].id;
-				} else if(dataList.skills[si].name === 'フェアリーテイマー') {
-					fairyTamerSI = si;
-					fairyTamerSId = dataList.skills[si].id;
+			dataList.skills.forEach(function(skill, index) {
+				if(skill.name === 'ソーサラー') {
+					sorcererSI = index;
+					sorcererSId = skill.id;
+				} else if(skill.name === 'コンジャラー') {
+					conjurerSI = index;
+					conjurerSId = skill.id;
+				} else if(skill.name === 'プリースト') {
+					priestSI = index;
+					priestSId = skill.id;
+				} else if(skill.name === 'マギテック') {
+					magitecSI = index;
+					magitecSId = skill.id;
+				} else if(skill.name === 'フェアリーテイマー') {
+					fairyTamerSI = index;
+					fairyTamerSId = skill.id;
 				}
-			}
+			});
 
 			// magicIndex,magicIdを格納
-			for(var mi = 0; mi < magicList.length; mi++) {
-				if(magicList[mi].skillName === '真語魔法') {
-					sorcererMI = mi;
-					sorcererMId = dataList.magics[mi].magicId;
-				} else if(magicList[mi].skillName === '操霊魔法') {
-					conjurerMI = mi;
-					conjurerMId = dataList.magics[mi].magicId;
-				} else if(magicList[mi].skillName === '深智魔法') {
-					wizardMI = mi;
-					wizardMId = dataList.magics[mi].magicId;
-				} else if(magicList[mi].skillName === '神聖魔法') {
-					priestMI = mi;
-					priestMId = dataList.magics[mi].magicId;
-				} else if(magicList[mi].skillName === '魔導機術') {
-					magitecMI = mi;
-					magitecMId = dataList.magics[mi].magicId;
-				} else if(magicList[mi].skillName === '妖精魔法') {
-					fairyTamerMI = mi;
-					fairyTamerMId = dataList.magics[mi].magicId;
+			magicList.forEach(function(magic, index) {
+				if(magic.skillName === '真語魔法') {
+					sorcererMI = index;
+					sorcererMId = magic.magicId;
+				} else if(magic.skillName === '操霊魔法') {
+					conjurerMI = index;
+					conjurerMId = magic.magicId;
+				} else if(magic.skillName === '深智魔法') {
+					wizardMI = index;
+					wizardMId = magic.magicId;
+				} else if(magic.skillName === '神聖魔法') {
+					priestMI = index;
+					priestMId = magic.magicId;
+				} else if(magic.skillName === '魔導機術') {
+					magitecMI = index;
+					magitecMId = magic.magicId;
+				} else if(magic.skillName === '妖精魔法') {
+					fairyTamerMI = index;
+					fairyTamerMId = magic.magicId;
 				}
-			}
+			});
 		});
 
 		console.log('getData end');
@@ -176,8 +176,6 @@ app.controller('AppController', function($scope, $resource) {
 
 	// プリースト用魔法取得
 	var getPriestMagics = function(index, skillLevel) {
-		console.log('Priest');
-		console.log($scope.selectedGod.id);
 		magicList[index].magics.map(function(magic) {
 			if((magic.godId === 0 && magic.rank <= skillLevel) || (magic.godId === $scope.selectedGod.id && magic.rank <= skillLevel)) {
 				magic.magicId = magicList[index].magicId;
@@ -213,9 +211,9 @@ app.controller('AppController', function($scope, $resource) {
 		var upperLimitRank;
 		// 各属性の最低レベル、判定用に初期値100
 		var availableSpecialLevel = 100;
-		for (var i = 0; i < $scope.fairyTamerElements.length; i++) {
-			if(i < 6) {	// 土、水・氷、炎、風、光、闇の場合
-				targetElementNumber = $scope.fairyTamerElements[i].level;
+		$scope.fairyTamerElements.forEach(function(element, i) {
+			if(i < 6) { // 土、水・氷、炎、風、光、闇の場合
+				targetElementNumber = element.level;
 				otherElementsNumber = targetElementNumber !== 0 ? totalFairyNumber - targetElementNumber : 0;
 				upperLimitRank = targetElementNumber + Math.ceil(otherElementsNumber / 2) <= targetElementNumber * 2 ?
 					targetElementNumber + Math.ceil(otherElementsNumber / 2) :
@@ -225,14 +223,14 @@ app.controller('AppController', function($scope, $resource) {
 				if(targetElementNumber < availableSpecialLevel) {
 					availableSpecialLevel = targetElementNumber;
 				}
-			} else if(i === 6) {	// 基本の場合
+			} else if(i === 6) { // 基本の場合
 				upperLimitRank = skillLevel;
 				addFairyTamerMagic(index, i, upperLimitRank, magicList[index].skillName);
-			} else {	// 特殊の場合
+			} else { // 特殊の場合
 				upperLimitRank = availableSpecialLevel;
 				addFairyTamerMagic(index, i, upperLimitRank, magicList[index].skillName);
 			}
-		}
+		});
 	};
 
 	// 表示ボタン押下イベント
@@ -241,6 +239,7 @@ app.controller('AppController', function($scope, $resource) {
 		// submitする度に初期化
 		$scope.magics = [];
 		$scope.submitFlg = true;
+		sortByMagicId = true;
 
 		// 真語魔法取得
 		if($scope.skills[sorcererSI].checked){
