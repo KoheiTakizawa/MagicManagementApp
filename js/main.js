@@ -12,7 +12,7 @@ app.controller('AppController', function($scope, $resource) {
 	$scope.isFairyTamer = false;
 	$scope.magics = [];
 	$scope.headerList = [];
-	var sortBySkill = true;
+	var sortByMagicId = true;
 
 	// skillインデックス格納用変数
 	var sorcererSI;
@@ -276,7 +276,7 @@ app.controller('AppController', function($scope, $resource) {
 	// ソートに応じて系統か種別のカラムに背景色を付ける
 	$scope.getBackgroundColor = function(magic, header) {
 		// 系統ソートの場合
-		if(sortBySkill && header.displayName === $scope.headerList[0].displayName) {
+		if(sortByMagicId && header.displayName === $scope.headerList[0].displayName) {
 			// 神聖魔法、妖精魔法以外
 			if(magic.magicId !== priestMId && magic.magicId !== fairyTamerMId) {
 				return backgroundColors[0].colors[magic.magicId-1].color;
@@ -293,7 +293,7 @@ app.controller('AppController', function($scope, $resource) {
 				return backgroundColors[0].colors[magic.magicId-1].colors[magic.fairyElementId-1].color;
 			}
 		// 種別ソートの場合
-		} else if(!sortBySkill && header.displayName === $scope.headerList[4].displayName) {
+		} else if(!sortByMagicId && header.displayName === $scope.headerList[4].displayName) {
 			return backgroundColors[1].colors[magic.categoryId-1].color;
 		}
 	};
@@ -302,11 +302,11 @@ app.controller('AppController', function($scope, $resource) {
 	$scope.sortMagic = function(index) {
 		// 系統ソート
 		if(index === 0) {
-			sortBySkill = true;
-			$scope.magics = _.sortBy(_.sortBy(_.sortBy(_.sortBy(originalMagicList, 'rank'), 'fairyElementId'), 'godId'), 'skillId');
+			sortByMagicId = true;
+			$scope.magics = _.sortBy(_.sortBy(_.sortBy(_.sortBy(originalMagicList, 'rank'), 'fairyElementId'), 'godId'), 'magicId');
 		// 種別ソート
 		} else {
-			sortBySkill = false;
+			sortByMagicId = false;
 			$scope.magics = _.sortBy(_.sortBy(_.sortBy(_.sortBy(_.sortBy(originalMagicList, 'fairyElementId'), 'godId'), 'skillId'), 'rank'), 'categoryId');
 		}
 	};
