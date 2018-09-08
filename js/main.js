@@ -93,7 +93,7 @@ app.controller('AppController', ($scope, $resource) => {
 				} else if(magic.skillName === '神聖魔法') {
 					priestMI = index;
 					priestMId = magic.magicId;
-				} else if(magic.skillName === '魔導機術') {
+				} else if(magic.skillName === '魔動機術') {
 					magitecMI = index;
 					magitecMId = magic.magicId;
 				} else if(magic.skillName === '妖精魔法') {
@@ -253,7 +253,7 @@ app.controller('AppController', ($scope, $resource) => {
 		if($scope.skills[priestSI].checked){
 			getPriestMagics(priestMI, $scope.skills[priestSI].level);
 		}
-		// 魔導機術取得
+		// 魔動機術取得
 		if($scope.skills[magitecSI].checked){
 			getStandardMagics(magitecMI, $scope.skills[magitecSI].level);
 		}
