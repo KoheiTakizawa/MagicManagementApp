@@ -212,8 +212,8 @@ app.controller('AppController', ($scope, $resource) => {
 				// 他属性の契約妖精数
 				const otherElementsNumber = targetElementNumber !== 0 ? totalFairyNumber - targetElementNumber : 0;
 				// 取得可能当該属性ランク
-				const upperLimitRank = targetElementNumber + Math.ceil(otherElementsNumber / 2) <= targetElementNumber * 2 ?
-					targetElementNumber + Math.ceil(otherElementsNumber / 2) :
+				const upperLimitRank = targetElementNumber + Math.floor(otherElementsNumber / 2) <= targetElementNumber * 2 ?
+					targetElementNumber + Math.floor(otherElementsNumber / 2) :
 					targetElementNumber * 2;
 				addFairyTamerMagic(index, i, upperLimitRank, magicList[index].skillName);
 				// 現在最低レベルと当該属性のレベルを比較し、下回れば更新 ⇒ Math.min()がNaN返すんだけどなんで？
